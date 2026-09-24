@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ADM — UNO dos Inscritos</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='rotate(-16 50 50)'%3E%3Crect x='22' y='8' width='56' height='84' rx='10' fill='%2310202B'/%3E%3Crect x='26' y='12' width='48' height='76' rx='7' fill='%23fff'/%3E%3Crect x='31' y='17' width='38' height='66' rx='5' fill='%232BCDE3'/%3E%3Cpolygon points='50,34 63,41.5 63,58.5 50,66 37,58.5 37,41.5' fill='%23fff' stroke='%2310202B' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:ital,wght@0,600;0,800;0,900;1,800&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#2BCDE3;--cyan-2:#12A6BD;--ink:#10202B;--blue:#1C6ED8;--sun:#FFD43B;--red:#E5392F;--fd:"Lilita One","Arial Black",sans-serif;--fb:Nunito,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--cyan);color:var(--ink);font-family:var(--fb);font-weight:700}
+body{padding:calc(env(safe-area-inset-top,0px) + 16px) 14px calc(env(safe-area-inset-bottom,0px) + 90px);
+  background:radial-gradient(circle at 20% 0,#6FE3F2,transparent 60%),var(--cyan)}
+h1{font-family:var(--fd);font-weight:400;font-size:clamp(28px,6vw,44px);margin:0;color:var(--blue);
+  -webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 var(--ink);letter-spacing:1px}
+h2{font-family:var(--fd);font-weight:400;font-size:24px;margin:0 0 12px}
+.wrap{max-width:1100px;margin:0 auto}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.pill{background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 12px;font-size:13px}
+.card{background:#fff;border:4px solid var(--ink);border-radius:20px;padding:16px;margin-bottom:16px;box-shadow:0 6px 0 var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px}
+input,select,textarea{font:inherit;border:3px solid var(--ink);border-radius:12px;padding:8px 10px;background:#fff;color:var(--ink);min-width:0}
+textarea{resize:vertical;min-height:54px}
+input[type=color]{padding:2px;height:40px;width:52px}
+button{font-family:var(--fd);font-size:16px;border:3px solid var(--ink);border-radius:14px;padding:8px 14px;cursor:pointer;
+  background:#fff;color:var(--ink);box-shadow:0 4px 0 var(--ink);transition:transform .08s}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+button.pri{background:var(--sun)}button.blue{background:var(--blue);color:#fff}button.red{background:var(--red);color:#fff}
+button.sm{font-size:13px;padding:4px 9px;border-radius:10px;box-shadow:0 3px 0 var(--ink)}
+.muted{opacity:.7;font-size:13px}
+#login{max-width:380px;margin:12vh auto 0;text-align:center}
+#login input{width:100%;margin:12px 0}
+.com{display:grid;grid-template-columns:120px 1fr;gap:14px;border:3px solid var(--ink);border-radius:16px;padding:12px;margin-bottom:12px;background:#F4FDFF}
+.com canvas{width:120px;height:187.5px;border-radius:10px;display:block}
+.com .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.com .wide{grid-column:1/-1}
+.num{font-family:var(--fd);font-size:20px}
+.photo{width:44px;height:44px;border:3px solid var(--ink);border-radius:10px;background:#eee center/cover;flex:none}
+.rooms td,.rooms th{padding:6px 8px;border-bottom:2px solid #d8eef2;text-align:left;font-size:14px}
+.rooms{width:100%;border-collapse:collapse}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--ink);color:#fff;
+  display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;z-index:5}
+.bar .st{font-size:14px}
+.cover{height:10px;border:3px solid var(--ink);border-radius:99px;background:#eee;overflow:hidden;margin-top:6px}
+.cover i{display:block;height:100%;background:var(--blue)}
+.hide{display:none!important}
+#bgStatus{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;border-radius:12px;padding:8px 14px;font-weight:900}
+#bgStatus.hide{display:none}
+#bgEd{position:fixed;inset:0;z-index:50;background:rgba(16,32,43,.6);display:grid;place-items:center;padding:14px}
+#bgEd.hide{display:none}
+.bgbox{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(380px,94vw);margin:0}
+#bgCv{width:min(300px,70vw);height:auto;border-radius:14px;cursor:grab;touch-action:none;box-shadow:0 8px 0 var(--ink)}
+#bgCv:active{cursor:grabbing}
+.usebox{display:flex;align-items:center;gap:6px;font-size:13px;background:#EAF7FB;border:2px solid var(--ink);border-radius:999px;padding:3px 10px}
+.com:has(input[data-act="use"]:not(:checked)){opacity:.55}
+.bgctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 12px;margin-top:6px;align-items:center}
+.bgctl label{display:flex;flex-direction:column;font-size:12px;gap:2px}
+.bgctl input[type=range]{padding:0;border:none;accent-color:var(--blue)}
+.com canvas{position:sticky;top:60px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;position:sticky;top:6px;z-index:4}
+.tabs button{font-size:15px;background:#fff}
+.tabs button.on{background:var(--ink);color:#fff}
+[data-tab]{display:none}[data-tab].show{display:block}
+.lv-top{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:#F4FDFF;border:3px solid var(--ink);border-radius:16px;padding:10px 12px}
+.lv-top img{width:54px;border-radius:6px;box-shadow:0 3px 0 var(--ink)}
+.lv-chips{display:flex;flex-wrap:wrap;gap:6px}
+.lv-chips span{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 9px;font-size:13px;white-space:nowrap}
+.lv-chips i.cc{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;border:2px solid var(--ink)}
+.lv-p{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;padding:8px 10px;border-bottom:2px solid #DDF1F5}
+.lv-p.turn{background:#FFF6CC;border-radius:12px}
+.lv-p .who{display:flex;align-items:center;gap:8px;min-width:0}
+.lv-p .who b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.lv-p .av{width:34px;height:34px;border-radius:8px;border:2px solid var(--ink);background:#fff center/cover;display:grid;place-items:center;flex:none;font-family:var(--fd)}
+.lv-p .n{font-family:var(--fd);background:var(--ink);color:#fff;border-radius:6px;padding:0 6px;font-size:13px}
+.lv-cards{display:flex;flex-wrap:wrap;gap:3px}
+.lv-cards img{width:30px;border-radius:3px}
+.lv-score{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px;font-size:13px}
+.lv-score span{background:#FFF6CC;border:2px solid var(--ink);border-radius:999px;padding:2px 9px}
+.lv-log{margin:10px 0 0;padding:0;list-style:none;font-size:13px;display:flex;flex-direction:column;gap:3px;max-height:170px;overflow:auto}
+.lv-log li{background:#F4FDFF;border-radius:8px;padding:3px 8px}
+@media(max-width:560px){.lv-p{grid-template-columns:1fr}}
+.chk{display:flex;gap:10px;align-items:flex-start;border:3px solid var(--ink);border-radius:14px;padding:10px;cursor:pointer;background:#F4FDFF}
+.chk input[type=checkbox]{width:24px;height:24px;padding:0;margin-top:2px;flex:none;accent-color:var(--blue)}
+.chk small{opacity:.75}
+.plist{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+.pl{display:flex;align-items:center;gap:8px;border:3px solid var(--ink);border-radius:14px;padding:6px 8px;background:#F4FDFF}
+.pl .av{width:40px;height:40px;border-radius:8px;border:2px solid var(--ink);background:#fff center/cover;display:grid;place-items:center;font-family:var(--fd)}
+@media(max-width:560px){.com{grid-template-columns:1fr}.com canvas{margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="card">
+    <h1>PAINEL ADM</h1>
+    <p class="muted">UNO dos Inscritos</p>
+    <input id="pw" type="password" placeholder="Senha" autocomplete="current-password">
+    <button class="pri" id="btnLogin" style="width:100%">Entrar</button>
+    <p id="loginErr" class="muted" style="color:var(--red)"></p>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="top">
+      <h1>PAINEL ADM</h1>
+      <span class="pill" id="modePill"></span>
+      <a class="pill" href="../" style="color:inherit;text-decoration:none">← Ir para o jogo</a>
+      <button class="sm" id="btnLogout">Sair do ADM</button>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button data-t="play" class="on">🎮 Partida</button><button data-t="rules">📜 Regras</button>
+      <button data-t="set">⏱️ Tempos & 🎵 Música</button><button data-t="com">💬 Comentários</button>
+    </nav>
+
+    <div class="card" data-tab="set">
+      <h2>⏱️ Tempos da troca</h2>
+      <div class="grid">
+        <label class="f">Intervalo entre trocas (segundos) — 1ª rodada<input id="sInt" type="number" min="15" max="3600" step="5"></label>
+        <label class="f">Intervalo das repetidas (segundos) — depois que todos os comentários já apareceram<input id="sRepI" type="number" min="5" max="600" step="5"></label>
+        <label class="f">Comentário em destaque (segundos)<input id="sHi" type="number" min="2" max="30" step="1"></label>
+        <label class="f">Duração da roleta (segundos)<input id="sRou" type="number" min="3" max="20" step="1"></label>
+        <label class="f">Ordem dos comentários<select id="sOrd"><option value="seq">Na ordem da lista</option><option value="random">Aleatória</option></select></label>
+      </div>
+      <p class="muted">Mudanças no intervalo valem na hora para as partidas em andamento (depois de salvar).</p>
+    </div>
+
+    <div class="card" data-tab="play">
+      <h2>🎮 Sala</h2>
+      <div id="roomsBox"></div>
+    </div>
+    <div class="card" data-tab="play">
+      <h2>🔴 Ao vivo</h2>
+      <div id="liveBox"><p class="muted">Nenhuma partida rolando agora.</p></div>
+    </div>
+
+    <div class="card" data-tab="set">
+      <h2>🎵 Músicas da partida</h2>
+      <div class="grid">
+        <div class="f"><b>Música de fundo</b><small class="muted">Toca em loop durante a partida</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="bg"><button class="sm hide" type="button" data-test="bg">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="bg">Remover</button></div>
+          <audio controls class="hide" data-mprev="bg" style="width:100%"></audio><small class="muted" data-mst="bg"></small></div>
+        <div class="f"><b>Música do UNO!</b><small class="muted">Entra quando alguém grita UNO. Se a pessoa voltar a ter 2+ cartas, volta para a de fundo com um efeito de rebobinar.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="uno"><button class="sm hide" type="button" data-test="uno">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="uno">Remover</button></div>
+          <audio controls class="hide" data-mprev="uno" style="width:100%"></audio><small class="muted" data-mst="uno"></small></div>
+        <div class="f"><b>Voz do "UNO!"</b><small class="muted">Toca quando alguém grita UNO (ou pega quem esqueceu). Sem arquivo, usa o som padrão.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="voice"><button class="sm hide" type="button" data-test="voice">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="voice">Remover</button></div>
+          <audio controls class="hide" data-mprev="voice" style="width:100%"></audio><small class="muted" data-mst="voice"></small></div>
+        <div class="f"><b>Palmas do fim da partida</b><small class="muted">Toca na tela de resultados enquanto esperam a próxima.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="clap"><button class="sm hide" type="button" data-test="clap">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="clap">Remover</button></div>
+          <audio controls class="hide" data-mprev="clap" style="width:100%"></audio><small class="muted" data-mst="clap"></small></div>
+        <div class="f"><b>Música da escuridão 🌑</b><small class="muted">Começa 2 s depois que alguém joga a carta da escuridão, em loop. Enquanto isso as músicas normais ficam mudas; quando a luz volta, ela para e as normais voltam.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="dark"><button class="sm hide" type="button" data-test="dark">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="dark">Remover</button></div>
+          <audio controls class="hide" data-mprev="dark" style="width:100%"></audio><small class="muted" data-mst="dark"></small></div>
+        <div class="f"><b>Som da chave 🔑 (carta jaula)</b><small class="muted">Toca quando alguém usa a carta-chave (ou outra jaula) e solta quem estava preso.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="key"><button class="sm hide" type="button" data-test="key">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="key">Remover</button></div>
+          <audio controls class="hide" data-mprev="key" style="width:100%"></audio><small class="muted" data-mst="key"></small></div>
+        <div class="f"><b>Som de "pegar" (não gritou UNO / ZA WARUDO)</b><small class="muted">Toca quando alguém avisa que a pessoa não gritou. Sem arquivo, usa um apito.</small>
+          <div class="row"><input type="file" accept="audio/mpeg,audio/*" data-music="catch"><button class="sm hide" type="button" data-test="catch">▶ Ouvir no jogo</button><button class="sm red hide" data-mdel="catch">Remover</button></div>
+          <audio controls class="hide" data-mprev="catch" style="width:100%"></audio><small class="muted" data-mst="catch"></small></div>
+        <label class="f">Volume dos áudios enviados (música, UNO, voz, palmas, pegar, ZA WARUDO): <b id="volTxt"></b><input type="range" id="sVol" min="0" max="100" step="5"></label>
+        <label class="f">Volume dos efeitos do jogo (cliques, cartas, avisos…): <b id="sfxTxt"></b><input type="range" id="sSfx" min="0" max="100" step="5">
+          <div class="row"><button class="sm" type="button" data-test="sfx">▶ Ouvir efeitos</button></div></label>
+        <p class="muted" style="margin:0">Use ▶ ao lado de cada áudio para ouvir no volume que vai tocar no jogo (cada jogador ainda pode abaixar no menu dele).</p>
+      </div>
+      <p class="muted">O arquivo sobe na hora (não precisa clicar em Salvar). Use mp3 de até 7 MB. O volume é salvo sozinho quando você solta a barra e já vale no jogo. O som de cada carta dos inscritos toca no volume da carta × este volume dos áudios enviados.</p>
+    </div>
+
+    <div class="card" data-tab="play">
+      <h2>🧪 Debug: dar uma carta para alguém</h2>
+      <div class="row"><select id="dgWho"></select><select id="dgCard"></select><button class="pri" id="dgGo">Dar a carta</button></div>
+      <div class="row" style="margin-top:8px"><b>Cor da mesa:</b>
+        <button class="sm" data-dcol="r" style="background:#E5392F;color:#fff">Vermelho</button><button class="sm" data-dcol="y" style="background:#F4BE14">Amarelo</button>
+        <button class="sm" data-dcol="g" style="background:#23A049;color:#fff">Verde</button><button class="sm" data-dcol="b" style="background:#1C6ED8;color:#fff">Azul</button></div>
+      <p class="muted">Se a carta estiver na mão de outra pessoa, ela vai para quem você escolheu (e a outra recebe uma carta aleatória no lugar). Se estiver no monte, substitui uma carta aleatória da mão. Só funciona com partida rolando.</p>
+    </div>
+    <div class="card" data-tab="play">
+      <h2>🧪 Debug: cartas dos inscritos reveladas</h2>
+      <div class="row"><input type="number" id="dbgN" min="0" max="52" value="10" style="width:90px">
+        <button class="pri" id="dbgGo">Revelar essa quantidade agora</button><button id="dbgZero">Zerar</button></div>
+      <div class="row" style="margin-top:8px">
+        <button data-dbg="all">Todas (52)</button>
+        <button data-dbg="half">Metade (26)</button>
+        <button data-dbg="lastFirst">Até a última da 1ª rodada</button>
+        <button data-dbg="firstDone">1ª rodada completa</button>
+        <button data-dbg="penRep">Até a penúltima repetida</button>
+        <button data-dbg="lastRep">Até a última repetida</button>
+      </div>
+      <p class="muted">Monta as cartas já reveladas seguindo a regra do jogo: primeiro cada comentário em uso aparece uma vez, depois repetem até completar as 52. "Até a última da 1ª rodada" deixa faltando só um comentário novo (a próxima troca é a última com roleta); "penúltima repetida" deixa faltando 2 cartas. Vale na hora (se tiver partida rolando) e nas próximas — online e no treino.</p>
+      <div id="subsNow"></div>
+    </div>
+
+    <div class="card" data-tab="rules">
+      <h2>📜 Regras da casa</h2>
+      <div class="grid">
+        <label class="chk"><input type="checkbox" id="rSeven"> <span><b>7 e 0</b><br><small>7 troca de mão com quem escolher · 0 gira as mãos de todos</small></span></label>
+        <label class="chk"><input type="checkbox" id="rStack"> <span><b>Acumular</b><br><small>+2 em cima de +2, +4 em cima de +2/+4 (quem não tiver compra tudo)</small></span></label>
+        <label class="chk"><input type="checkbox" id="rMatch"> <span><b>Comprar até poder jogar</b><br><small>Desligado: compra só 1 carta</small></span></label>
+        <label class="f">Carta comprada que dá para jogar<select id="rDrawn">
+          <option value="ask">Pergunta se quer jogar ou guardar</option>
+          <option value="force">Joga obrigatoriamente</option>
+          <option value="pass">Guarda e passa a vez</option></select></label>
+        <label class="chk"><input type="checkbox" id="rKeep"> <span><b>Carta dos inscritos mantém o poder original</b><br><small>Ligado: um 7 de inscrito faz o poder do 7 E o do inscrito. Desligado: só o do inscrito.</small></span></label>
+        <label class="chk"><input type="checkbox" id="rSteve"> <span><b>Problems andando pela mesa</b><br><small>O Problems do Minecraft passeia em volta da mesa e reage às jogadas.</small></span></label>
+        <label class="f">"Melhores cartas" da carta Destruição<select id="rBest">
+          <option value="auto">Automático (inscritos e pretas; com 10 ou menos cartas normais, só as pretas)</option>
+          <option value="manual">Eu escolho</option></select></label>
+        <div class="f" id="bestBox"><b style="font-size:13px">Contam como melhores:</b>
+          <label><input type="checkbox" id="rBSub"> Cartas dos inscritos</label>
+          <label><input type="checkbox" id="rBBlack"> Pretas (coringa e +4)</label>
+          <label><input type="checkbox" id="rBAct"> Ações (+2, bloqueio, inverter)</label></div>
+        <label class="chk"><input type="checkbox" id="rPass"> <span><b>Pode passar a vez</b><br><small>Aparece “Passar a vez” ao lado de “Comprar” (não vale com +2/+4 acumulado)</small></span></label>
+<p class="muted" style="margin:0">A partida começa sozinha quando 4 pessoas estão prontas no lobby. Para começar com menos (2 ou 3), use ▶️ Começar partida na aba Partida.</p><select id="rMin" hidden><option value="4">4</option></select>
+        <label class="f">Tela final (segundos até a próxima partida)<input type="number" id="rEnd" min="8" max="90" step="1"></label>
+        <label class="chk"><input type="checkbox" id="rJump"> <span><b>Se intrometer</b><br><small>Quem tiver a carta idêntica (mesma cor e número) aperta rápido o botão indicado e joga fora da vez — a vez pula pra ele</small></span></label>
+        <label class="f">Jogar duas cartas iguais seguidas<select id="rDouble">
+          <option value="off">Desligado</option>
+          <option value="same">Só mesmo número e mesma cor</option>
+          <option value="any">Mesmo número, qualquer cor</option></select>
+          <small class="muted">Depois de jogar, aparece um botão rápido para soltar a outra igual. Errou o botão, perde a chance.</small></label>
+      </div>
+      <p class="muted">As regras valem a partir da próxima partida (depois de salvar).</p>
+    </div>
+
+    <div class="card" data-tab="com">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">💬 Comentários dos inscritos</h2>
+        <div class="row">
+          <button class="sm blue" id="btnAdd">+ Adicionar</button>
+          <button class="sm pri" id="btnPaste">📋 Colar lista</button>
+          <button class="sm" id="btnSamples">Carregar os comentários enviados</button>
+          <button class="sm red" id="btnClear">Limpar tudo</button>
+        </div>
+      </div>
+      <p id="coverTxt" style="margin:10px 0 0"></p>
+      <div class="cover"><i id="coverBar"></i></div>
+      <p class="muted">Cada comentário substitui 1 tipo de carta sorteado na roleta (todas as cópias dele). Há 52 tipos coloridos; as pretas nunca são trocadas.
+        A pré-visualização usa um tipo de exemplo — no jogo, quem decide é a roleta.</p>
+      <div id="pasteBox" class="hide" style="margin-top:12px;border:3px dashed var(--ink);border-radius:16px;padding:12px;background:#F4FDFF">
+        <p style="margin:0 0 6px"><b>Uma linha por comentário:</b> <code>@autor | texto do comentário | emoji | efeito</code></p>
+        <p class="muted" style="margin:0 0 8px">Emoji e efeito são opcionais. Efeitos: chuva, escudo, espiao, troca, turbo, presente, caos (sem efeito = vai alternando). Dá para colar direto de uma planilha (colunas separadas por tab).</p>
+        <textarea id="pasteTxt" rows="8" style="width:100%" placeholder="@joao123 | Uma carta com um foguete indo pra lua | 🚀 | turbo&#10;@maria.gamer | Carta que faz todo mundo dançar | 💃"></textarea>
+        <p id="pasteInfo" class="muted"></p>
+        <div class="row"><button class="sm pri" id="pasteAdd">Adicionar ao final</button><button class="sm" id="pasteReplace">Substituir a lista</button><button class="sm" id="pasteClose">Fechar</button></div>
+      </div>
+      <div id="list" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="bgPick" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+<input type="file" id="sfxPick" accept="audio/*,.mp3,.wav,.ogg,.m4a" hidden>
+<div id="bgStatus" class="hide"></div>
+<div id="bgEd" class="hide">
+  <div class="bgbox card">
+    <h2 style="margin:0">✋ Ajuste a imagem de fundo</h2>
+    <p class="muted" style="margin:0">Arraste a imagem na carta para posicionar. Use a rodinha do mouse ou o controle abaixo para o tamanho.</p>
+    <canvas id="bgCv" width="320" height="500"></canvas>
+    <label class="f" style="width:100%">🔍 Tamanho<input type="range" id="bgZoom" min="1" max="4" step="0.02"></label>
+    <div class="row"><button class="sm" id="bgCenter">Centralizar</button><button class="pri" id="bgDone">Pronto</button></div>
+    <p class="muted" style="margin:0">Depois clique em 💾 Salvar para valer no jogo.</p>
+  </div>
+</div>
+
+<div class="bar hide" id="bar">
+  <span class="st" id="dirty">Tudo salvo</span>
+  <button class="pri" id="btnSave">💾 Salvar</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="../shared.js?v=20260924a"></script>
+<script>
+'use strict';
+const U = window.UNO;
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const PATTERNS = { dots: 'Bolinhas', stripes: 'Listras', hex: 'Hexágonos', stars: 'Estrelas', waves: 'Ondas', checks: 'Xadrez' };
+
+let cfg = null, dirty = false, gotFirst = false;
+const imgCache = {};
+
+/* ---------- login ---------- */
+function tryLogin() {
+  if ($('#pw').value === U.ADM_PASSWORD) {
+    localStorage.setItem(U.LS_ADM, '1'); start();
+  } else $('#loginErr').textContent = 'Senha incorreta.';
+}
+$('#btnLogin').onclick = tryLogin;
+$('#pw').onkeydown = e => { if (e.key === 'Enter') tryLogin(); };
+// entra direto se já fez login (depois que o script inteiro carregou — no modo local a config chega na hora)
+setTimeout(() => { if (localStorage.getItem(U.LS_ADM) === '1') start(); }, 0);
+$('#btnLogout').onclick = () => { localStorage.removeItem(U.LS_ADM); location.reload(); };
+
+function showTab(t) {
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('[data-tab]').forEach(c => c.classList.toggle('show', c.dataset.tab === t));
+  localStorage.setItem('uno_adm_tab', t);
+}
+document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => showTab(b.dataset.t));
+bindBgEditor();
+function start() {
+  $('#login').classList.add('hide'); $('#app').classList.remove('hide'); $('#bar').classList.remove('hide');
+  showTab(localStorage.getItem('uno_adm_tab') || 'play');
+  const mode = U.Store.init();
+  $('#modePill').textContent = mode === 'firebase' ? '🟢 Firebase conectado' : '🟡 Modo local (sem Firebase)';
+  U.Store.onConfig(c => {
+    if (dirty && gotFirst) return;           // não atropela edições não salvas
+    gotFirst = true;
+    cfg = U.clone(c); renderAll(); rerenderLive();
+  });
+  setupRooms();
+  setupMusic();
+  // o áudio antigo do ZA WARUDO (que ficava em Tempos & Música) vai para o som da carta jojo e é apagado do lugar antigo
+  U.Store.getMusicOnce('zw').then(url => {
+    if (!url) return;
+    return U.Store.getMusicOnce('card_kjbrrrr2').then(ex => (ex ? Promise.resolve() : U.Store.saveMusic('card_kjbrrrr2', url)))
+      .then(() => U.Store.saveMusic('zw', null))
+      .then(() => { const st = $('#bgStatus'); st.textContent = '♻️ O áudio antigo do ZA WARUDO virou o som da carta jojo (e o antigo foi apagado).'; st.classList.remove('hide'); setTimeout(() => st.classList.add('hide'), 5000); sfxKnown.kjbrrrr2 = undefined; delete sfxKnown.kjbrrrr2; if (cfg) { const c = cfg.comments.find(x => x.id === 'kjbrrrr2'); if (c) c.hasSfx = true; } checkSfx(); });
+  }).catch(() => {});
+  document.fonts && document.fonts.ready.then(() => cfg && renderPreviews());
+}
+
+/* ---------- configurações ---------- */
+function renderSettings() {
+  const s = cfg.settings;
+  $('#sInt').value = s.swapIntervalSec; $('#sHi').value = s.highlightSec; $('#sRepI').value = s.swapRepeatSec || 25;
+  $('#sRou').value = s.rouletteSec; $('#sOrd').value = s.order;
+  $('#rSeven').checked = !!s.sevenZero; $('#rStack').checked = !!s.stacking; $('#rMatch').checked = !!s.drawToMatch;
+  $('#rDrawn').value = ['ask', 'force', 'pass'].indexOf(s.drawnCard) >= 0 ? s.drawnCard : 'ask';
+  $('#rKeep').checked = s.subKeepsBase !== false; $('#rSteve').checked = s.steve !== false;
+  $('#rBest').value = s.bestMode === 'manual' ? 'manual' : 'auto'; $('#rBSub').checked = s.bestSub !== false; $('#rBBlack').checked = s.bestBlack !== false; $('#rBAct').checked = !!s.bestAction;
+  $('#bestBox').style.display = s.bestMode === 'manual' ? '' : 'none';
+  $('#rPass').checked = !!s.allowPass; $('#rMin').value = String(s.minPlayers || 2); $('#rEnd').value = s.endSec || 20;
+  $('#rJump').checked = !!s.jumpIn; $('#rDouble').value = ['off', 'same', 'any'].indexOf(s.doublePlay) >= 0 ? s.doublePlay : 'off';
+  $('#sVol').value = s.musicVol; $('#volTxt').textContent = s.musicVol + '%';
+  const sv = s.sfxVol === undefined ? 60 : s.sfxVol; $('#sSfx').value = sv; $('#sfxTxt').textContent = sv + '%';
+}
+const clamp = (v, a, b, d) => { v = Number(v); return isFinite(v) ? Math.min(b, Math.max(a, v)) : d; };
+['#sInt', '#sRepI', '#sHi', '#sRou', '#sOrd', '#rSeven', '#rStack', '#rMatch', '#rDrawn', '#sVol', '#rJump', '#rDouble', '#rPass', '#rMin', '#rEnd', '#rKeep', '#rSteve', '#sSfx', '#rBest', '#rBSub', '#rBBlack', '#rBAct'].forEach(id => $(id).addEventListener('change', () => {
+  const s = cfg.settings;
+  s.swapIntervalSec = clamp($('#sInt').value, 15, 3600, 120);
+  s.swapRepeatSec = clamp($('#sRepI').value, 5, 600, 25);
+  s.highlightSec = clamp($('#sHi').value, 2, 30, 5);
+  s.rouletteSec = clamp($('#sRou').value, 3, 20, 6);
+  s.order = $('#sOrd').value === 'random' ? 'random' : 'seq';
+  s.sevenZero = $('#rSeven').checked; s.stacking = $('#rStack').checked; s.drawToMatch = $('#rMatch').checked;
+  s.drawnCard = $('#rDrawn').value;
+  s.jumpIn = $('#rJump').checked; s.doublePlay = $('#rDouble').value;
+  s.subKeepsBase = $('#rKeep').checked; s.steve = $('#rSteve').checked;
+  s.bestMode = $('#rBest').value; s.bestSub = $('#rBSub').checked; s.bestBlack = $('#rBBlack').checked; s.bestAction = $('#rBAct').checked;
+  s.allowPass = $('#rPass').checked; s.minPlayers = clamp($('#rMin').value, 2, 4, 2); s.endSec = clamp($('#rEnd').value, 8, 90, 20);
+  s.musicVol = clamp($('#sVol').value, 0, 100, 60);
+  s.sfxVol = clamp($('#sSfx').value, 0, 100, 60);
+  renderSettings();
+  if ((id === '#sVol' || id === '#sSfx') && !cfg.isDefault && U.Store.saveVolumes) {   // volume vale na hora no jogo, sem precisar de Salvar
+    U.Store.saveVolumes(s.musicVol, s.sfxVol).then(() => { if (!dirty) $('#dirty').textContent = '✅ Volume salvo!'; }).catch(() => markDirty());
+    return;
+  }
+  markDirty();
+}));
+
+/* ---------- comentários ---------- */
+function newId() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function effectOptions(sel) {
+  return U.EFFECT_KEYS.map(k => `<option value="${k}" ${k === sel ? 'selected' : ''}>${U.EFFECTS[k].emoji} ${U.EFFECTS[k].name} — ${U.EFFECTS[k].desc}</option>`).join('');
+}
+function patternOptions(sel) {
+  return Object.keys(PATTERNS).map(k => `<option value="${k}" ${k === sel ? 'selected' : ''}>${PATTERNS[k]}</option>`).join('');
+}
+function renderList() {
+  const L = cfg.comments;
+  $('#list').innerHTML = L.map((c, i) => `
+    <div class="com" data-i="${i}">
+      <div><canvas data-prev="${i}"></canvas>
+        <p class="muted" style="text-align:center;margin:6px 0 0">ex.: ${esc(U.typeLabel(U.TYPE_KEYS[i % 52]))}</p></div>
+      <div class="fields">
+        <div class="row wide" style="justify-content:space-between">
+          <span class="num">#${i + 1}</span>
+          <label class="usebox"><input type="checkbox" data-act="use" ${c.off ? '' : 'checked'}> <b>${c.off ? 'Fora do jogo' : 'Usar no jogo'}</b></label>
+          <div class="row">
+            <button class="sm" data-act="up" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button class="sm" data-act="down" ${i === L.length - 1 ? 'disabled' : ''}>↓</button>
+            <button class="sm red" data-act="del">Excluir</button>
+          </div>
+        </div>
+        <label class="f">Autor (@)<input data-k="author" maxlength="30" value="${esc(c.author)}"></label>
+        <label class="f">Emoji (sem foto)<input data-k="emoji" maxlength="8" value="${esc(c.emoji)}"></label>
+        <label class="f wide">Comentário<textarea data-k="text" maxlength="90">${esc(c.text)}</textarea></label>
+        <div class="f wide bgf"><span style="font-size:13px"><b>Imagem de fundo da carta</b> (opcional — fica em destaque; a foto vai para o canto)</span>
+          <div class="row"><div class="photo" style="width:56px;height:80px;${c.bg ? `background-image:url('${c.bg}')` : ''}"></div>
+            <button class="sm pri" data-act="bgpick">🖼️ Escolher imagem</button><small class="muted">ou arraste a imagem para cá</small>
+            ${c.bg ? '<button class="sm" data-act="nobg">Remover</button>' : ''}</div>
+          ${c.bg ? `<div class="bgctl">
+            <label>🔍 Tamanho <input type="range" min="1" max="4" step="0.05" data-k="bgZ" value="${+c.bgZ || 1}"></label>
+            <label>↔ Horizontal <input type="range" min="-1" max="1" step="0.02" data-k="bgX" value="${+c.bgX || 0}"></label>
+            <label>↕ Vertical <input type="range" min="-1" max="1" step="0.02" data-k="bgY" value="${+c.bgY || 0}"></label>
+            <button class="sm" data-act="bgreset">Centralizar</button><button class="sm pri" data-act="bgedit">✋ Ajustar arrastando</button></div>` : ''}</div>
+        <div class="f wide sfxf"><span style="font-size:13px"><b>🔊 Som da carta</b> (toca quando ela é jogada)</span>
+          <div class="row"><button class="sm pri" type="button" data-act="sfxpick">🎵 Escolher som</button>
+            <span class="muted sfxst" data-sfxst="${esc(c.id)}">verificando…</span>
+            <button class="sm hide" type="button" data-act="sfxtest" data-sfxbtn="${esc(c.id)}">▶ Ouvir</button><button class="sm hide" type="button" data-act="nosfx" data-sfxbtn="${esc(c.id)}">Remover</button>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px">Volume <input type="range" min="0" max="100" step="5" data-k="sfxVol" value="${c.sfxVol === undefined ? 80 : c.sfxVol}"></label></div></div>
+        <div class="f"><span style="font-size:13px">Foto (opcional)</span>
+          <div class="row"><div class="photo" style="${c.photo ? `background-image:url('${c.photo}')` : ''}"></div>
+            <input type="file" accept="image/*" data-act="photo" style="max-width:170px">
+            ${c.photo ? '<button class="sm" data-act="nophoto">Remover</button>' : ''}</div></div>
+        <div class="f"><span style="font-size:13px">Cores do tema</span>
+          <div class="row"><input type="color" data-k="a" value="${esc(c.a || '#FF6FB5')}"><input type="color" data-k="b" value="${esc(c.b || '#7B2FF7')}"></div></div>
+        <label class="f">Padrão<select data-k="pattern">${patternOptions(c.pattern)}</select></label>
+        <label class="f wide">Atributo especial<select data-k="effect">${effectOptions(c.effect)}</select></label>
+      </div>
+    </div>`).join('') || '<p class="muted">Nenhum comentário. Clique em “+ Adicionar” ou carregue os exemplos.</p>';
+  renderPreviews(); renderCoverage(); checkSfx();
+}
+/* ---------- editor da imagem de fundo (arrasta para posicionar, roda/slider para o tamanho) ---------- */
+function coverFile(file, w, h) {
+  if (U.resizeCover) return U.resizeCover(file, w, h);
+  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = () => rej(new Error('não foi possível ler'));
+    fr.onload = () => { const im = new Image(); im.onerror = () => rej(new Error('arquivo inválido'));
+      im.onload = () => { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); const k = Math.max(w / im.width, h / im.height);
+        x.drawImage(im, (w - im.width * k) / 2, (h - im.height * k) / 2, im.width * k, im.height * k); res(c.toDataURL('image/jpeg', 0.72)); };
+      im.src = fr.result; };
+    fr.readAsDataURL(file); });
+}
+let bgEd = null;
+function openBgEditor(i) {
+  const c = cfg.comments[i]; if (!c || !c.bg) return;
+  bgEd = { i, drag: null };
+  $('#bgEd').classList.remove('hide');
+  $('#bgZoom').value = +c.bgZ || 1;
+  drawBgEd();
+  const im = bgImg(c); if (im && !im.complete) im.addEventListener('load', drawBgEd, { once: true });
+}
+function drawBgEd() {
+  if (!bgEd) return;
+  const c = cfg.comments[bgEd.i];
+  U.drawSubCard(U.TYPE_KEYS[bgEd.i % 52], c, photoImg(c), $('#bgCv'), bgImg(c));
+}
+function bgOverflow(c) {
+  const im = bgImg(c); if (!im || !im.naturalWidth) return { x: 1, y: 1 };
+  const W = 260, H = 440, z = +c.bgZ || 1, sc = Math.max(W / im.naturalWidth, H / im.naturalHeight) * z;
+  return { x: Math.max(1, im.naturalWidth * sc - W), y: Math.max(1, im.naturalHeight * sc - H) };
+}
+function closeBgEditor() { $('#bgEd').classList.add('hide'); if (bgEd) renderPreview(bgEd.i); bgEd = null; renderList(); }
+document.addEventListener('DOMContentLoaded', () => {});
+function bindBgEditor() {
+  const cv = $('#bgCv');
+  cv.addEventListener('pointerdown', e => { if (!bgEd) return; bgEd.drag = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => {
+    if (!bgEd || !bgEd.drag) return;
+    const c = cfg.comments[bgEd.i], f = cv.getBoundingClientRect().width / 320, o = bgOverflow(c);
+    const dx = (e.clientX - bgEd.drag.x) / f, dy = (e.clientY - bgEd.drag.y) / f;
+    bgEd.drag = { x: e.clientX, y: e.clientY };
+    c.bgX = Math.max(-1, Math.min(1, (+c.bgX || 0) - dx / (o.x / 2)));
+    c.bgY = Math.max(-1, Math.min(1, (+c.bgY || 0) - dy / (o.y / 2)));
+    markDirty(); drawBgEd();
+  });
+  cv.addEventListener('pointerup', () => { if (bgEd) bgEd.drag = null; });
+  cv.addEventListener('wheel', e => { if (!bgEd) return; e.preventDefault(); const c = cfg.comments[bgEd.i];
+    c.bgZ = Math.max(1, Math.min(4, (+c.bgZ || 1) * (e.deltaY < 0 ? 1.06 : 1 / 1.06))); $('#bgZoom').value = c.bgZ; markDirty(); drawBgEd(); }, { passive: false });
+  $('#bgZoom').addEventListener('input', () => { if (!bgEd) return; cfg.comments[bgEd.i].bgZ = +$('#bgZoom').value; markDirty(); drawBgEd(); });
+  $('#bgCenter').onclick = () => { if (!bgEd) return; const c = cfg.comments[bgEd.i]; c.bgX = 0; c.bgY = 0; c.bgZ = 1; $('#bgZoom').value = 1; markDirty(); drawBgEd(); };
+  $('#bgDone').onclick = closeBgEditor;
+}
+let bgPickIdx = -1, sfxPickIdx = -1;
+const sfxKnown = {};
+function paintSfx() {
+  document.querySelectorAll('[data-sfxst]').forEach(el => {
+    const id = el.dataset.sfxst, k = sfxKnown[id];
+    el.textContent = k === undefined ? 'verificando…' : k ? '✅ som enviado' : 'sem som';
+    document.querySelectorAll(`[data-sfxbtn="${CSS.escape(id)}"]`).forEach(b => b.classList.toggle('hide', !k));
+  });
+}
+function checkSfx() {
+  (cfg ? cfg.comments : []).forEach(c => {
+    if (sfxKnown[c.id] !== undefined) return;
+    sfxKnown[c.id] = undefined;
+    U.Store.getMusicOnce('card_' + c.id).then(url => { sfxKnown[c.id] = !!url; if (url && !c.hasSfx) { c.hasSfx = true; } paintSfx(); }).catch(() => { sfxKnown[c.id] = false; paintSfx(); });
+  });
+  paintSfx();
+}
+document.addEventListener('DOMContentLoaded', () => {});
+async function useBgFile(i, file) {
+  const st = $('#bgStatus');
+  if (!file || !cfg.comments[i]) return;
+  if (!/^image\//.test(file.type) && !/\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name)) { alert('Esse arquivo não é uma imagem (use PNG, JPG ou WEBP).'); return; }
+  st.textContent = '⏳ Carregando a imagem…'; st.classList.remove('hide');
+  try {
+    const c = cfg.comments[i];
+    c.bg = await coverFile(file, 360, 600); c.bgZ = 1; c.bgX = 0; c.bgY = 0;
+    markDirty(); renderList(); openBgEditor(i);
+    st.classList.add('hide');
+  } catch (err) { st.textContent = '❌ Não deu para usar essa imagem: ' + err.message + ' (tente PNG ou JPG)'; }
+}
+$('#sfxPick').addEventListener('change', e => {
+  const f = e.target.files[0], c = cfg.comments[sfxPickIdx]; if (!f || !c) return;
+  if (f.size > 2.5 * 1024 * 1024) { alert('Som grande demais (máx. 2,5 MB). Tente um mp3 menor.'); return; }
+  const st = $('#bgStatus'); st.textContent = '⏳ Enviando o som…'; st.classList.remove('hide');
+  const fr = new FileReader();
+  fr.onerror = () => { st.textContent = '❌ Não deu para ler o arquivo'; };
+  fr.onload = () => U.Store.saveMusic('card_' + c.id, fr.result).then(() => {
+    c.hasSfx = true; if (c.sfxVol === undefined) c.sfxVol = 80; sfxKnown[c.id] = true;
+    markDirty(); renderList(); st.textContent = '✅ Som enviado! (clique em Salvar para guardar o volume)'; setTimeout(() => st.classList.add('hide'), 2500);
+  }, err => { st.textContent = '❌ Erro ao enviar: ' + err.message; });
+  fr.readAsDataURL(f);
+});
+$('#bgPick').addEventListener('change', e => { const f = e.target.files[0]; if (bgPickIdx >= 0 && f) useBgFile(bgPickIdx, f); });
+$('#list').addEventListener('dragover', e => { if (e.target.closest('.com')) e.preventDefault(); });
+$('#list').addEventListener('drop', e => {
+  const com = e.target.closest('.com'); if (!com) return;
+  const f = e.dataTransfer && e.dataTransfer.files[0]; if (!f) return;
+  e.preventDefault(); useBgFile(+com.dataset.i, f);
+});
+function bgImg(c) {
+  if (!c.bg) return null;
+  if (!imgCache[c.bg]) { const im = new Image(); im.onload = () => renderPreviews(); im.src = c.bg; imgCache[c.bg] = im; }
+  return imgCache[c.bg];
+}
+function photoImg(c) {
+  if (!c.photo) return null;
+  if (!imgCache[c.photo]) { const im = new Image(); im.onload = () => renderPreviews(); im.src = c.photo; imgCache[c.photo] = im; }
+  return imgCache[c.photo];
+}
+function renderPreview(i) {
+  const cv = document.querySelector(`canvas[data-prev="${i}"]`), c = cfg.comments[i];
+  if (cv && c) U.drawSubCard(U.TYPE_KEYS[i % 52], c, photoImg(c), cv, bgImg(c));
+}
+function renderPreviews() { cfg.comments.forEach((_, i) => renderPreview(i)); }
+function renderCoverage() {
+  const all = cfg.comments.length, n = cfg.comments.filter(c => !c.off).length, cov = Math.min(52, n);
+  $('#coverTxt').innerHTML = `<b>${n}</b> de ${all} comentário${all === 1 ? '' : 's'} em uso → ` +
+    (n === 0 ? 'nenhuma carta vai virar' : n >= 52 ? `cobrem as 52 cartas${n > 52 ? ` (${n - 52} não vão aparecer)` : ' 🎉'}` :
+     `<b>1ª rodada:</b> cada um aparece uma vez (${n} cartas, com roleta e comentário). <b>Depois:</b> eles se repetem sorteados, rapidinho, até completar as 52 (faltam ${52 - n}).`);
+  $('#coverBar').style.width = (cov / 52 * 100) + '%';
+}
+function renderAll() { renderSettings(); renderList(); setDirty(false); }
+
+$('#list').addEventListener('change', e => {
+  if (e.target.dataset.act !== 'use') return;
+  const i = +e.target.closest('.com').dataset.i; cfg.comments[i].off = !e.target.checked; markDirty(); renderList();
+});
+$('#list').addEventListener('input', e => {
+  const k = e.target.dataset.k; if (!k) return;
+  const i = +e.target.closest('.com').dataset.i;
+  cfg.comments[i][k] = e.target.value; renderPreview(i); markDirty();
+});
+$('#list').addEventListener('change', async e => {
+  const k = e.target.dataset.k, i = +(e.target.closest('.com') || {}).dataset?.i;
+  if (k === 'pattern' || k === 'effect') { cfg.comments[i][k] = e.target.value; renderPreview(i); markDirty(); }
+
+
+  if (e.target.dataset.act === 'photo' && e.target.files[0]) {
+    try { cfg.comments[i].photo = await U.resizeImageFile(e.target.files[0], 160); markDirty(); renderList(); }
+    catch (err) { alert(err.message); }
+  }
+});
+$('#list').addEventListener('click', e => {
+  const act = e.target.dataset.act; if (!act || act === 'photo') return;
+  const i = +e.target.closest('.com').dataset.i, L = cfg.comments;
+  if (act === 'up' && i > 0) [L[i - 1], L[i]] = [L[i], L[i - 1]];
+  else if (act === 'down' && i < L.length - 1) [L[i + 1], L[i]] = [L[i], L[i + 1]];
+  else if (act === 'del') { if (!confirm('Excluir o comentário #' + (i + 1) + '?')) return; L.splice(i, 1); }
+  else if (act === 'nophoto') L[i].photo = '';
+  else if (act === 'nobg') { L[i].bg = ''; }
+  else if (act === 'nosfx') { U.Store.saveMusic('card_' + L[i].id, null).then(() => { sfxKnown[L[i].id] = false; paintSfx(); }); L[i].hasSfx = false; }
+  else if (act === 'sfxpick') { sfxPickIdx = i; $('#sfxPick').value = ''; $('#sfxPick').click(); return; }
+  else if (act === 'sfxtest') {
+    U.Store.getMusicOnce('card_' + L[i].id).then(url => { if (!url) return; const a = new Audio(url); a.volume = Math.min(1, (L[i].sfxVol === undefined ? 80 : +L[i].sfxVol) / 100 * clamp($('#sVol').value, 0, 100, 60) / 100); a.play(); });
+    return;
+  }
+  else if (act === 'bgreset') { L[i].bgZ = 1; L[i].bgX = 0; L[i].bgY = 0; }
+  else if (act === 'bgedit') { openBgEditor(i); return; }
+  else if (act === 'bgpick') { bgPickIdx = i; $('#bgPick').value = ''; $('#bgPick').click(); return; }
+  renderList(); markDirty();
+});
+$('#btnAdd').onclick = () => {
+  const th = U.THEMES[cfg.comments.length % U.THEMES.length];
+  cfg.comments.push({ id: newId(), author: '@', text: '', emoji: '⭐', photo: '', a: th.a, b: th.b, pattern: th.pattern, effect: U.EFFECT_KEYS[cfg.comments.length % U.EFFECT_KEYS.length] });
+  renderList(); markDirty();
+  const last = $('#list').lastElementChild; last && last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+/* ---------- colar uma lista de comentários ---------- */
+function parsePaste() {
+  const out = [];
+  $('#pasteTxt').value.split(/\r?\n/).forEach(line => {
+    if (!line.trim()) return;
+    const parts = line.split(line.indexOf('\t') >= 0 ? '\t' : '|').map(x => x.trim());
+    let [author, text, emoji, effect] = parts;
+    if (!text && author && !author.startsWith('@')) { text = author; author = ''; }
+    if (!text) return;
+    author = author ? (author.startsWith('@') ? author : '@' + author) : '@inscrito';
+    const ek = (effect || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const i = cfg.comments.length + out.length, th = U.THEMES[i % U.THEMES.length];
+    out.push({ id: newId() + i, author: author.slice(0, 30), text: text.slice(0, 90), emoji: emoji || th.emoji || '💬', photo: '',
+      a: th.a, b: th.b, pattern: th.pattern, effect: U.EFFECTS[ek] ? ek : U.EFFECT_KEYS[i % U.EFFECT_KEYS.length] });
+  });
+  return out;
+}
+$('#btnPaste').onclick = () => { $('#pasteBox').classList.toggle('hide'); $('#pasteTxt').focus(); };
+$('#pasteClose').onclick = () => $('#pasteBox').classList.add('hide');
+$('#pasteTxt').addEventListener('input', () => {
+  const n = parsePaste().length, long = $('#pasteTxt').value.split(/\r?\n/).filter(l => (l.split(/[|\t]/)[1] || '').trim().length > 90).length;
+  $('#pasteInfo').textContent = `${n} comentário(s) reconhecido(s)` + (long ? ` · ${long} passam de 90 letras e serão cortados` : '');
+});
+$('#pasteAdd').onclick = () => { const L = parsePaste(); if (!L.length) return; cfg.comments = cfg.comments.concat(L); renderList(); markDirty(); $('#pasteBox').classList.add('hide'); $('#pasteTxt').value = ''; };
+$('#pasteReplace').onclick = () => { const L = parsePaste(); if (!L.length) return; if (!confirm('Trocar a lista atual por estes ' + L.length + ' comentários?')) return; cfg.comments = L; renderList(); markDirty(); $('#pasteBox').classList.add('hide'); $('#pasteTxt').value = ''; };
+
+$('#btnSamples').onclick = () => {
+  if (cfg.comments.length && !confirm('Substituir a lista atual pelos ' + U.REAL_COMMENTS.length + ' comentários enviados?')) return;
+  cfg.comments = U.makePlaceholders('real'); renderList(); markDirty();
+};
+$('#btnClear').onclick = () => {
+  if (!confirm('Apagar TODOS os comentários da lista?')) return;
+  cfg.comments = []; renderList(); markDirty();
+};
+
+/* ---------- salvar ---------- */
+function setDirty(v) { dirty = v; $('#dirty').textContent = v ? '⚠️ Alterações não salvas' : 'Tudo salvo'; }
+function markDirty() { setDirty(true); }
+$('#btnSave').onclick = async () => {
+  // ids únicos garantidos (usados para não repetir comentário na mesma partida)
+  const seen = new Set();
+  cfg.comments.forEach(c => { if (!c.id || seen.has(c.id)) c.id = newId(); seen.add(c.id); });
+  $('#btnSave').disabled = true;
+  try { await U.Store.saveConfig(cfg); setDirty(false); $('#dirty').textContent = '✅ Salvo!'; }
+  catch (err) { alert('Erro ao salvar: ' + err.message); }
+  $('#btnSave').disabled = false;
+};
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------- ouvir os áudios no volume do jogo ---------- */
+const testUrls = {};
+let actx = null, testSrc = null;
+function testAudio(kind) {
+  actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  if (testSrc) { try { testSrc.stop(); } catch (e) {} testSrc = null; }
+  const mv = clamp($('#sVol').value, 0, 100, 60) / 100, sv = clamp($('#sSfx').value, 0, 100, 60) / 100;
+  if (kind === 'sfx') {           // os mesmos sons do jogo (carta, compra, aviso, vitória)
+    const tone = (f, d, type, vol, slide, delay) => { const t = actx.currentTime + (delay || 0), o = actx.createOscillator(), g = actx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f + slide), t + d);
+      g.gain.setValueAtTime(Math.max(0.0002, vol * sv), t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + d + 0.03); };
+    tone(420, 0.14, 'triangle', 0.1, 420); tone(320, 0.09, 'square', 0.035, -80, 0.3);
+    [392, 523, 392, 659].forEach((f, i) => tone(f, 0.16, 'square', 0.05, 0, 0.6 + i * 0.12));
+    [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.2, 'triangle', 0.12, 0, 1.3 + i * 0.08));
+    return;
+  }
+  const url = testUrls[kind]; if (!url) return;
+  fetch(url).then(r => r.arrayBuffer()).then(ab => actx.decodeAudioData(ab)).then(buf => {
+    const src = actx.createBufferSource(), g = actx.createGain();
+    // mesma conta do jogo: músicas usam 70% do volume; voz/palmas/pegar usam o volume direto
+    g.gain.value = (kind === 'bg' || kind === 'uno' || kind === 'dark') ? mv * 0.7 : mv;
+    src.buffer = buf; src.connect(g); g.connect(actx.destination); src.start();
+    if (kind === 'bg' || kind === 'uno' || kind === 'dark') src.stop(actx.currentTime + 8);
+    testSrc = src;
+  }).catch(e => alert('Não deu para tocar: ' + e.message));
+}
+
+/* ---------- músicas ---------- */
+function setupMusic() {
+  $('#sVol').addEventListener('input', () => $('#volTxt').textContent = $('#sVol').value + '%');
+  $('#sSfx').addEventListener('input', () => $('#sfxTxt').textContent = $('#sSfx').value + '%');
+  document.addEventListener('click', e => { const b = e.target.closest('[data-test]'); if (b) testAudio(b.dataset.test); });
+  U.Store.onMusic((kind, url) => {
+    const a = document.querySelector(`[data-mprev="${kind}"]`);
+    if (!a) return;
+    a.classList.toggle('hide', !url); if (url && a.src !== url) a.src = url; if (!url) a.removeAttribute('src');
+    document.querySelector(`[data-mdel="${kind}"]`).classList.toggle('hide', !url);
+    const tb = document.querySelector(`[data-test="${kind}"]`); if (tb) tb.classList.toggle('hide', !url);
+    testUrls[kind] = url;
+    document.querySelector(`[data-mst="${kind}"]`).textContent = url ? '✅ Arquivo carregado' : (kind === 'voice' ? 'Usando o som padrão' : 'Nenhum arquivo (fica em silêncio)');
+  });
+  document.querySelectorAll('[data-music]').forEach(inp => inp.addEventListener('change', () => {
+    const f = inp.files[0], kind = inp.dataset.music; if (!f) return;
+    const st = document.querySelector(`[data-mst="${kind}"]`);
+    if (f.size > 7 * 1024 * 1024) { alert('Arquivo grande demais (máx. 7 MB). Tente um mp3 mais leve.'); inp.value = ''; return; }
+    st.textContent = '⏳ Enviando…';
+    const fr = new FileReader();
+    fr.onload = () => U.Store.saveMusic(kind, fr.result).then(() => st.textContent = '✅ Música carregada', e => { st.textContent = ''; alert('Erro ao enviar: ' + e.message); });
+    fr.readAsDataURL(f); inp.value = '';
+  }));
+  document.querySelectorAll('[data-mdel]').forEach(b => b.onclick = () => { if (confirm('Remover esta música?')) U.Store.saveMusic(b.dataset.mdel, null); });
+}
+
+/* ---------- ao vivo ---------- */
+const miniCache = new Map(), livePhotos = new Map();
+function miniCard(tk, rep) {
+  const key = rep ? tk + ':' + rep.id : tk;
+  if (miniCache.has(key)) return miniCache.get(key);
+  let photo = null;
+  if (rep) {
+    const c = cfg && cfg.comments.find(x => x.id === rep.id);
+    if (c && c.photo) {
+      photo = livePhotos.get(c.photo);
+      if (!photo) { photo = new Image(); photo.onload = () => { miniCache.delete(key); rerenderLive(); }; photo.src = c.photo; livePhotos.set(c.photo, photo); }
+    }
+  }
+  const cc = rep && cfg && cfg.comments.find(x => x.id === rep.id);
+  const big = rep ? U.drawSubCard(tk, rep, photo, null, cc && cc.bg ? bgImg(cc) : null) : U.drawStandardCard(tk);
+  const sm = document.createElement('canvas'); sm.width = 96; sm.height = 150;
+  sm.getContext('2d').drawImage(big, 0, 0, 96, 150);
+  const url = sm.toDataURL('image/png');
+  miniCache.set(key, url);
+  return url;
+}
+let live = null, liveLog = [], liveSeq = null;
+const pname = (P, id) => (P[id] && P[id].name) || '?';
+function logFx(s, P) {
+  if (!s || !s.fx || s.fx.seq === liveSeq) return;
+  const first = liveSeq === null; liveSeq = s.fx.seq;
+  if (first) return;
+  for (const it of s.fx.items || []) {
+    const n = id => esc(pname(P, id));
+    let t = null;
+    if (it.t === 'play') { const d = U.DECK[it.card]; t = `${n(it.pid)} jogou ${U.typeLabel(U.typeKey(d))}${d.c === 'k' ? ' (' + U.COLOR_NAME[it.color] + ')' : ''}`; }
+    else if (it.t === 'draw') t = `${n(it.pid)} comprou ${it.n}`;
+    else if (it.t === 'drawN') t = `${n(it.pid)} comprou +${it.n}`;
+    else if (it.t === 'skip') t = `${n(it.pid)} perdeu a vez`;
+    else if (it.t === 'reverse') t = 'Sentido invertido';
+    else if (it.t === 'swap7') t = `${n(it.pid)} trocou de mão com ${n(it.target)}`;
+    else if (it.t === 'rotate0') t = 'Todas as mãos giraram';
+    else if (it.t === 'unoShout') t = `${n(it.pid)} gritou UNO!`;
+    else if (it.t === 'unoPenalty') t = `${n(it.pid)} esqueceu o UNO (+2)`;
+    else if (it.t === 'jump') t = `⚡ ${n(it.pid)} se intrometeu`;
+    else if (it.t === 'double') t = `✌️ ${n(it.pid)} jogou duas`;
+    else if (it.t === 'effect') t = `${U.EFFECTS[it.effect].emoji} ${U.EFFECTS[it.effect].name} (${n(it.pid)})`;
+    else if (it.t === 'swapDone') t = `💬 ${U.typeLabel(it.target)} virou carta dos inscritos`;
+    else if (it.t === 'win') t = `🏆 ${n(it.pid)} venceu!`;
+    if (t) liveLog.unshift(t);
+  }
+  liveLog = liveLog.slice(0, 30);
+}
+function renderLive(state, P, status, round) {
+  live = { state, P: P || {}, status, round };
+  logFx(state, live.P);
+  rerenderLive();
+}
+function rerenderLive() {
+  const box = $('#liveBox'); if (!box || !cfg) return;
+  if (!live || !live.state || !live.state.order) { box.innerHTML = '<p class="muted">Nenhuma partida rolando agora.</p>'; return; }
+  const s = U.normalizeState(JSON.parse(JSON.stringify(live.state))), P = live.P;
+  const top = s.discard[s.discard.length - 1], topTk = U.typeKey(U.DECK[top]);
+  const cur = s.order[s.turn];
+  const nextSwap = s.swap ? '💬 troca acontecendo' : '💬 próximo inscrito em ' + fmtT(Math.max(0, U.swapDueAt(s, cfg.settings) - Date.now()));
+  box.innerHTML = `
+    <div class="lv-top"><img src="${miniCard(topTk, s.replaced[topTk])}" alt="">
+      <div class="lv-chips">
+        <span>${live.status === 'loading' ? '⏳ carregando' : s.phase === 'ended' ? '🏁 ' + esc(pname(P, s.winner)) + ' venceu' : '▶️ vez de <b>' + esc(pname(P, cur)) + '</b>'}</span>
+        <span><i class="cc" style="background:${U.COLOR_HEX[s.color]}"></i> ${U.COLOR_NAME[s.color] || ''}</span>
+        <span>${s.dir === 1 ? '⟳ horário' : '⟲ anti-horário'}</span>
+        <span>🂠 monte ${s.deck.length}</span>
+        ${s.stack ? `<span>🔥 +${s.stack.n} acumulado</span>` : ''}
+        <span>🃏 ${Object.keys(s.replaced).length}/52 trocadas</span>
+        <span id="lvSwap">${nextSwap}</span>
+        <span>🔁 rodada ${live.round || 1}</span>
+        <span id="lvTime">⏱️ ${fmtT(Math.max(0, Date.now() - (s.startedAt || Date.now())))}</span>
+        <span>🎯 ${Math.max(0, (s.hist || []).length - 1)} jogadas</span>
+      </div></div>
+    ${s.order.map(pid => {
+      const p = P[pid] || { name: '?' };
+      const av = p.photo ? `style="background-image:url('${p.photo}')"` : '';
+      const flags = (s.shields[pid] ? '🛡️' : '') + (s.uno[pid] === true ? ' <b style="color:#E5392F">UNO!</b>' : '') + (p.online === false ? ' 📴' : '');
+      return `<div class="lv-p ${pid === cur && s.phase === 'playing' ? 'turn' : ''}">
+        <div class="who"><div class="av" ${av}>${p.photo ? '' : esc(p.bot ? '🤖' : (p.name || '?').charAt(0))}</div><b>${esc(p.name)}</b><span class="n">${s.hands[pid].length}</span>${flags}</div>
+        <div class="lv-cards">${s.hands[pid].map(id => { const tk = U.typeKey(U.DECK[id]); return `<img src="${miniCard(tk, s.replaced[tk])}" title="${esc(U.typeLabel(tk))}" alt="">`; }).join('')}</div></div>`;
+    }).join('')}
+    <div class="lv-score"><b>Placar ⭐</b>${Object.entries(P).filter(([id, p]) => p.score || s.order.indexOf(id) >= 0).sort((a, b) => (b[1].score || 0) - (a[1].score || 0)).map(([id, p], i) => `<span>${i + 1}º ${esc(p.name)} <b>${p.score || 0}</b></span>`).join('')}</div>
+    <ul class="lv-log">${liveLog.map(t => `<li>${t}</li>`).join('')}</ul>`;
+  renderSubsNow(s.replaced);
+}
+function fmtT(ms) { const r = Math.ceil(ms / 1000); return Math.floor(r / 60) + ':' + String(r % 60).padStart(2, '0'); }
+setInterval(() => {
+  const el = document.getElementById('lvSwap');
+  const tEl = document.getElementById('lvTime');
+  if (tEl && live && live.state && live.state.phase === 'playing') tEl.textContent = '⏱️ ' + fmtT(Math.max(0, Date.now() - (live.state.startedAt || Date.now())));
+  if (el && live && live.state && !live.state.swap) el.textContent = '💬 próximo inscrito em ' + fmtT(Math.max(0, U.swapDueAt(live.state, cfg.settings) - Date.now()));
+}, 1000);
+function setupLiveLocal() {
+  const read = () => { try { const d = JSON.parse(localStorage.getItem('uno_live') || 'null'); if (d && Date.now() - d.t < 6 * 3600e3) renderLive(d.state, d.players, d.status); else renderSubsNow(U.Store.loadSubsLocal().replaced); } catch (e) {} };
+  read();
+  addEventListener('storage', e => { if (e.key === 'uno_live') read(); });
+}
+
+/* ---------- debug: dar carta ---------- */
+function fillDebugGive() {
+  const who = $('#dgWho'), card = $('#dgCard'); if (!who) return;
+  const P = (live && live.P) || {}, order = live && live.state && live.state.order ? live.state.order : [];
+  const opts = order.map(id => `<option value="${esc(id)}">${esc((P[id] || {}).name || id)}</option>`).join('') || '<option value="">(sem partida)</option>';
+  if (who.dataset.h !== opts) { const v = who.value; who.innerHTML = opts; who.dataset.h = opts; if (v) who.value = v; }
+  if (!card.options.length) {
+    const rep = (live && live.state && live.state.replaced) || {};
+    card.innerHTML = U.ALL_TYPES().map(tk => `<option value="${tk}">${esc(tk === 'W' ? 'Coringa' : tk === 'W4' ? '+4' : U.typeLabel(tk))}${rep[tk] ? ' · ' + esc((U.EFFECTS[rep[tk].effect] || {}).name || 'inscrito') : ''}</option>`).join('');
+  }
+}
+setInterval(fillDebugGive, 1000);
+$('#dgGo').onclick = async () => {
+  const pid = $('#dgWho').value, tk = $('#dgCard').value; if (!pid || !tk) return;
+  const cmd = { type: 'debugGive', pid, tk, t: Date.now() };
+  if (U.Store.mode === 'firebase') await U.Store.room().child('cmd').set(cmd);
+  else localStorage.setItem(U.LS_CMD, JSON.stringify(cmd));
+  flashBtn($('#dgGo')); $('#dgCard').innerHTML = '';
+};
+
+document.querySelectorAll('[data-dcol]').forEach(b => b.onclick = async () => {
+  const cmd = { type: 'debugColor', color: b.dataset.dcol, t: Date.now() };
+  if (U.Store.mode === 'firebase') await U.Store.room().child('cmd').set(cmd); else localStorage.setItem(U.LS_CMD, JSON.stringify(cmd));
+  flashBtn(b);
+});
+
+/* ---------- debug + cartas alteradas ---------- */
+$('#dbgGo').onclick = async () => { const n = clamp($('#dbgN').value, 0, 52, 0); await U.Store.debugSubs(n, cfg.comments); flashBtn($('#dbgGo')); if (U.Store.mode !== 'firebase') renderSubsNow(U.Store.loadSubsLocal().replaced); };
+document.querySelectorAll('[data-dbg]').forEach(b => b.onclick = () => {
+  const n = cfg.comments.filter(c => !c.off).length;
+  const v = { all: 52, half: 26, lastFirst: Math.max(0, Math.min(52, n) - 1), firstDone: Math.min(52, n), penRep: 50, lastRep: 51 }[b.dataset.dbg];
+  $('#dbgN').value = v; $('#dbgGo').click(); flashBtn(b);
+});
+$('#dbgZero').onclick = async () => { await U.Store.resetSubs(); flashBtn($('#dbgZero')); if (U.Store.mode !== 'firebase') renderSubsNow({}); };
+function renderSubsNow(rep) {
+  const box = $('#subsNow'); if (!box || !cfg) return;
+  const keys = U.TYPE_KEYS.filter(k => rep && rep[k]);
+  box.innerHTML = keys.length ? `<p><b>${keys.length}/52 cartas alteradas agora:</b></p><div class="lv-cards">${keys.map(k => `<img src="${miniCard(k, rep[k])}" title="${esc(U.typeLabel(k) + ' · ' + rep[k].author)}" style="width:44px">`).join('')}</div>` : '<p class="muted">Nenhuma carta alterada ainda.</p>';
+}
+
+/* ---------- sala única ---------- */
+const STATUS = { lobby: '🟦 No lobby', loading: '⏳ Carregando', playing: '🟢 Jogando' };
+function setupRooms() {
+  const box = $('#roomsBox');
+  if (U.Store.mode !== 'firebase') {
+    box.innerHTML = `<p class="muted">Sem Firebase: só dá para controlar o “Treinar contra bots” aberto em outra aba deste navegador.</p>
+      <div class="row"><button class="pri" id="btnLocalSwap">🎰 Substituir uma carta agora</button>
+      <button id="btnLocalScore">⭐ Zerar pontos</button><button id="btnLocalSubs">🃏 Resetar cartas dos inscritos</button></div>`;
+    $('#btnLocalScore').onclick = () => { U.Store.resetScores(); flashBtn($('#btnLocalScore')); };
+    $('#btnLocalSubs').onclick = () => { U.Store.resetSubs(); flashBtn($('#btnLocalSubs')); };
+    $('#btnLocalSwap').onclick = () => {
+      localStorage.setItem(U.LS_CMD, JSON.stringify({ type: 'swapNow', t: Date.now() }));
+      flashBtn($('#btnLocalSwap'));
+    };
+    setupLiveLocal();
+    return;
+  }
+  box.innerHTML = '<p class="muted">Carregando…</p>';
+  U.Store.room().on('value', snap => {
+    const r = snap.val() || {}, m = r.meta || {}, P = r.players || {};
+    renderLive(r.state || null, P, m.status, m.round);
+    if (!r.state) renderSubsNow((r.subs || {}).replaced);
+    const sig = JSON.stringify([m, P, r.state && r.state.phase, r.state && r.state.replaced && Object.keys(r.state.replaced).length]);
+    if (sig === box.dataset.sig) return;
+    box.dataset.sig = sig;
+    const st = m.status || 'lobby';
+    const ids = Object.keys(P).sort((a, b) => ((P[a].seat >= 0 ? P[a].seat : 9) - (P[b].seat >= 0 ? P[b].seat : 9)));
+    const nrep = r.state && r.state.replaced ? Object.keys(r.state.replaced).length : 0;
+    const ended = r.state && r.state.phase === 'ended';
+    box.innerHTML = `
+      <div class="row"><span class="pill">${r.meta ? (ended ? '🏁 Partida terminou' : STATUS[st] || st) : '⚪ Vazia'}</span>
+        ${st !== 'lobby' ? `<span class="pill">${nrep} carta(s) de inscritos</span>` : ''}</div>
+      <div class="plist">${ids.map(id => {
+        const p = P[id];
+        const av = p.photo ? `style="background-image:url('${p.photo}')"` : '';
+        const tag = (p.bot ? '🤖 bot' : p.online === false ? '📴 saiu' : p.ready ? '✔ pronto' : p.seat >= 0 ? 'cadeira ' + (p.seat + 1) : 'na fila') + ` · ⭐ ${p.score || 0}`;
+        return `<div class="pl"><div class="av" ${av}>${p.photo ? '' : esc((p.bot ? '🤖' : (p.name || '?').charAt(0)))}</div>
+          <div><b>${esc(p.name)}</b><br><small class="muted">${tag}</small></div>
+          ${p.bot ? '' : `<button class="sm" data-tobot="${esc(id)}" title="Trocar por bot">🤖</button>`}<button class="sm red" data-kick="${esc(id)}" title="Remover (apaga os pontos)">×</button></div>`;
+      }).join('') || '<p class="muted">Ninguém no lobby ainda. Mande o link do jogo para a galera!</p>'}</div>
+      <div class="row">
+        <button class="pri" data-a="start">${st === 'lobby' ? '▶️ Começar partida' : '🔁 Nova partida'}</button>
+        ${st !== 'lobby' ? '<button data-a="lobby">↩️ Voltar ao lobby</button>' : ''}
+        ${st === 'lobby' ? '<button class="blue" data-a="bot">🤖 Pôr bot</button>' : ''}
+        ${st === 'playing' && !ended ? '<button data-a="swap">🎰 Substituir carta agora</button>' : ''}
+        <button data-a="rscore">⭐ Zerar pontos</button>
+        <button data-a="rvote">📜 Voltar regras votadas ao padrão</button>
+        <button data-a="rsubs">🃏 Resetar cartas dos inscritos</button>
+        <button class="red" data-a="reset">🧹 Esvaziar sala</button>
+      </div>`;
+  });
+  box.addEventListener('click', async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    try {
+      if (b.dataset.tobot) { if (confirm('Trocar esta pessoa por um bot? Ela sai da partida e um bot continua jogando com as cartas e os pontos dela.')) await U.Store.replaceWithBot(b.dataset.tobot); return; }
+      if (b.dataset.kick) { if (!confirm('Remover esta pessoa? Os pontos dela serão apagados.')) return; await U.Store.kick(b.dataset.kick); }
+      if (b.dataset.a === 'rvote') { await U.Store.room().child('meta').update({ rules: null, vote: null }); flashBtn(b); return; }
+      if (b.dataset.a === 'rscore') { if (confirm('Zerar os pontos de todo mundo?')) await U.Store.resetScores(); return; }
+      if (b.dataset.a === 'rsubs') { if (confirm('Voltar todas as cartas dos inscritos ao normal? (vale a partir da próxima partida)')) { await U.Store.resetSubs(); flashBtn(b); } return; }
+      const a = b.dataset.a;
+      if (a === 'start') { if (dirty && !confirm('Há mudanças não salvas. Começar mesmo assim (com as regras da tela)?')) return; await U.Store.startMatch(cfg.settings); }
+      else if (a === 'lobby') await U.Store.toLobby();
+      else if (a === 'bot') await U.Store.addBot();
+      else if (a === 'swap') { await U.Store.command('swapNow'); flashBtn(b); }
+      else if (a === 'reset') { if (confirm('Tirar todo mundo da sala e apagar a partida?')) await U.Store.room().remove(); }
+    } catch (err) { alert(err.message); }
+  });
+}
+function flashBtn(b) { const t = b.textContent; b.textContent = '✅ Enviado'; setTimeout(() => b.textContent = t, 1400); }
+</script>
+</body>
+</html>
